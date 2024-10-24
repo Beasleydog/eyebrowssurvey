@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/eyebrowssurvey/static/css/main.74405b7e.css",
+    "main.js": "/eyebrowssurvey/static/js/main.7dd2d846.js",
+    "static/js/453.2e54ed55.chunk.js": "/eyebrowssurvey/static/js/453.2e54ed55.chunk.js",
+    "index.html": "/eyebrowssurvey/index.html",
+    "main.74405b7e.css.map": "/eyebrowssurvey/static/css/main.74405b7e.css.map",
+    "main.7dd2d846.js.map": "/eyebrowssurvey/static/js/main.7dd2d846.js.map",
+    "453.2e54ed55.chunk.js.map": "/eyebrowssurvey/static/js/453.2e54ed55.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.74405b7e.css",
+    "static/js/main.7dd2d846.js"
+  ]
+}
