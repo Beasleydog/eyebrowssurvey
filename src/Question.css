@@ -1,0 +1,142 @@
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageAndComments {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.imageContainer {
+  width: 500px;
+  height: 500px;
+  position: relative;
+}
+
+.commentsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  max-height: 500px; /* Set max height to match the image container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px; /* Add padding for nicer appearance */
+  border: 1px solid #ccc; /* Optional: add a border for better separation */
+  border-radius: 5px; /* Optional: round the corners */
+  background-color: #f9f9f9; /* Optional: add a background color */
+}
+
+.commentItem {
+  display: flex;
+  flex-direction: column; /* Arrange items in a column */
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.dotColor {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-bottom: 5px; /* Adjust margin for column layout */
+}
+
+.commentTextarea {
+  width: 200px;
+  height: 60px;
+  margin-bottom: 5px; /* Adjust margin for column layout */
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.dateOptions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* Adjust margin for column layout */
+}
+
+.yearInput {
+  width: 60px;
+  margin-right: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.comparisonButtons {
+  display: flex;
+  margin-right: 5px;
+}
+
+.comparisonButtons button {
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 2px;
+  cursor: pointer;
+}
+
+.comparisonButtons button.active {
+  background-color: #bdbdbd; /* Highlight active button */
+}
+
+.comparisonButtons button:hover {
+  background-color: #bdbdbd;
+}
+
+button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #d32f2f;
+}
+
+.yearSliderContainer,
+.confidenceContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.yearSlider,
+.confidenceSlider {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.yearLabel,
+.confidenceLabel {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.submitButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submitButton:hover {
+  background-color: #45a049;
+}
+
+.instructions {
+  max-width: 600px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
