@@ -11,17 +11,24 @@ function getRandomColor() {
 }
 
 function Question({ image, onSubmit }) {
+  const initialYear = new Date().getFullYear();
+  const initialConfidence = 5;
+
   const [dots, setDots] = useState([]);
   const [comments, setComments] = useState([]);
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [confidence, setConfidence] = useState(5);
+  const [year, setYear] = useState(initialYear);
+  const [confidence, setConfidence] = useState(initialConfidence);
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     setDots([]);
     setComments([]);
-    setYear(new Date().getFullYear());
-    setConfidence(5);
+    setYear(initialYear);
+    setConfidence(initialConfidence);
   }, [image]);
 
   const handleCanvasClick = (e) => {
@@ -94,15 +101,6 @@ function Question({ image, onSubmit }) {
 
   return (
     <div className="questionContainer">
-      <p className="instructions">
-        Click on the image to add a dot on any key feature. Explain what stood
-        out about it in the text box. Use the date input to show how it impacts
-        your perception of the overall date. Use the &lt;, =, &gt; buttons to
-        indicate if the dot made you think the image was before, exactly, or
-        after a certain year (e.g., if the dot made you think the image was
-        after 2000, you would click &gt; and type 2000). Then choose the overall
-        date with the slider, input your confidence, and click submit.
-      </p>
       <div className="imageAndComments">
         <div className="imageContainer" onClick={handleCanvasClick}>
           <canvas
@@ -113,83 +111,96 @@ function Question({ image, onSubmit }) {
           />
         </div>
         <div className="commentsContainer">
-          {comments.map((comment, index) => (
-            <div key={index} className="commentItem">
-              <div
-                className="dotColor"
-                style={{
-                  backgroundColor: dots[index].color,
-                }}
-              ></div>
-              <textarea
-                value={comment}
-                onChange={(e) => handleCommentChange(index, e.target.value)}
-                placeholder={`Comment ${index + 1}`}
-                className="commentTextarea"
-              />
-              <div className="dateOptions">
-                <div className="comparisonButtons">
-                  <button
-                    onClick={() => handleComparisonChange(index, "<")}
-                    className={dots[index].comparison === "<" ? "active" : ""}
-                  >
-                    &lt;
-                  </button>
-                  <button
-                    onClick={() => handleComparisonChange(index, ">")}
-                    className={dots[index].comparison === ">" ? "active" : ""}
-                  >
-                    &gt;
-                  </button>
-                  <button
-                    onClick={() => handleComparisonChange(index, "=")}
-                    className={dots[index].comparison === "=" ? "active" : ""}
-                  >
-                    =
-                  </button>
-                </div>
-                <input
-                  type="number"
-                  value={dots[index].year}
-                  onChange={(e) => handleYearChange(index, e.target.value)}
-                  placeholder="Year"
-                  className="yearInput"
-                />
-              </div>
-              <button onClick={() => handleDeleteComment(index)}>Delete</button>
+          {comments.length === 0 ? (
+            <div className="emptyStateMessage">
+              Click anywhere on the image to add a point and leave a comment
             </div>
-          ))}
+          ) : (
+            comments.map((comment, index) => (
+              <div key={index} className="commentItem">
+                <div
+                  className="dotColor"
+                  style={{
+                    backgroundColor: dots[index].color,
+                  }}
+                ></div>
+                <textarea
+                  value={comment}
+                  onChange={(e) => handleCommentChange(index, e.target.value)}
+                  placeholder={`Comment ${index + 1}`}
+                  className="commentTextarea"
+                />
+                <div className="dateOptions">
+                  <div className="comparisonButtons">
+                    <button
+                      onClick={() => handleComparisonChange(index, "<")}
+                      className={dots[index].comparison === "<" ? "active" : ""}
+                    >
+                      &lt;
+                    </button>
+                    <button
+                      onClick={() => handleComparisonChange(index, ">")}
+                      className={dots[index].comparison === ">" ? "active" : ""}
+                    >
+                      &gt;
+                    </button>
+                    <button
+                      onClick={() => handleComparisonChange(index, "=")}
+                      className={dots[index].comparison === "=" ? "active" : ""}
+                    >
+                      =
+                    </button>
+                  </div>
+                  <input
+                    type="number"
+                    value={dots[index].year}
+                    onChange={(e) => handleYearChange(index, e.target.value)}
+                    placeholder="Year"
+                    className="yearInput"
+                  />
+                </div>
+                <button
+                  className="delete"
+                  onClick={() => handleDeleteComment(index)}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
         </div>
       </div>
-      <div className="yearSliderContainer">
-        <label htmlFor="yearSlider">Your Guess of the Year:</label>
-        <input
-          id="yearSlider"
-          type="range"
-          min="1900"
-          max={new Date().getFullYear()}
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          className="yearSlider"
-        />
-        <span className="yearLabel">{year}</span>
+      <div className="sliderControls">
+        <div className="yearSliderContainer">
+          <label htmlFor="yearSlider">Year Estimate:</label>
+          <input
+            id="yearSlider"
+            type="range"
+            min="1900"
+            max={new Date().getFullYear()}
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="yearSlider"
+          />
+          <span className="yearLabel">{year}</span>
+        </div>
+        <div className="confidenceContainer">
+          <label htmlFor="confidenceSlider">Confidence:</label>
+          <input
+            id="confidenceSlider"
+            type="range"
+            min="1"
+            max="10"
+            value={confidence}
+            onChange={(e) => setConfidence(e.target.value)}
+            className="confidenceSlider"
+          />
+          <span className="confidenceLabel">{confidence}/10</span>
+        </div>
+        <button onClick={handleSubmit} className="submitButton">
+          Submit
+        </button>
       </div>
-      <div className="confidenceContainer">
-        <label htmlFor="confidenceSlider">Confidence (1-10):</label>
-        <input
-          id="confidenceSlider"
-          type="range"
-          min="1"
-          max="10"
-          value={confidence}
-          onChange={(e) => setConfidence(e.target.value)}
-          className="confidenceSlider"
-        />
-        <span className="confidenceLabel">{confidence}</span>
-      </div>
-      <button onClick={handleSubmit} className="submitButton">
-        Submit
-      </button>
     </div>
   );
 }

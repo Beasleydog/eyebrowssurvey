@@ -1,38 +1,82 @@
 .App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.instructions-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
+.instructions-content {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.instructions-page h1 {
   text-align: center;
+  color: #333;
+  margin-bottom: 30px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.instructions-page h2 {
+  color: #444;
+  margin: 20px 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.instructions-page ol {
+  padding-left: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.instructions-page li {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.instructions-page ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.instructions-page ul li {
+  margin-bottom: 5px;
+}
+
+.start-button {
+  display: block;
+  margin: 30px auto 0;
+  padding: 12px 24px;
+  font-size: 18px;
+  background-color: #4caf50;
   color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.App-link {
-  color: #61dafb;
+.start-button:hover {
+  background-color: #45a049;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.conclude-page {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.conclude-page h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.conclude-page p {
+  color: #666;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto;
 }

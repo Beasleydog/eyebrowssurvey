@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import Question from "./Question";
+
 function App() {
   const images = [
     "/people/man0.png",
@@ -46,11 +47,17 @@ function App() {
     "/people/man20.png",
     "/people/woman20.png",
   ];
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+
+  const [currentQuestion, setCurrentQuestion] = useState(-1);
   const userId = Math.random().toString(36).substring(2, 15);
+
   function handleNextQuestion(data) {
     storeData(data, userId);
     setCurrentQuestion(currentQuestion + 1);
+  }
+
+  function startSurvey() {
+    setCurrentQuestion(0);
   }
 
   async function storeData(data, userId) {
@@ -78,8 +85,11 @@ function App() {
 
   return (
     <div className="App">
-      {currentQuestion < images.length ? (
+      {currentQuestion === -1 ? (
+        <Instructions onStart={startSurvey} />
+      ) : currentQuestion < images.length ? (
         <Question
+          key={currentQuestion}
           image={`${process.env.PUBLIC_URL}${images[currentQuestion]}`}
           onSubmit={handleNextQuestion}
         />
@@ -90,8 +100,67 @@ function App() {
   );
 }
 
+function Instructions({ onStart }) {
+  return (
+    <div className="instructions-page">
+      <h1>Eyebrows Survey</h1>
+      <div className="instructions-content">
+        <p>
+          Welcome! In this survey, you'll be shown a series of photographs and
+          asked to guess when each one was taken.
+        </p>
+        <h2>How it works:</h2>
+        <ol>
+          <li>
+            <strong>Identify Key Features:</strong> Click on any features in the
+            photo that help you determine its age (clothing, technology, etc.)
+          </li>
+          <li>
+            <strong>Explain Your Reasoning:</strong> For each feature you click,
+            explain why it suggests a particular time period
+          </li>
+          <li>
+            <strong>Date Indicators:</strong> Use the &lt;, =, &gt; buttons to
+            specify if a feature suggests the photo was taken:
+            <ul>
+              <li>
+                &lt; <em>before</em> a specific year
+              </li>
+              <li>
+                = <em>exactly in</em> a specific year
+              </li>
+              <li>
+                &gt; <em>after</em> a specific year
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Final Guess:</strong> Use the slider to make your final
+            guess about when the photo was taken
+          </li>
+          <li>
+            <strong>Confidence Rating:</strong> Rate how confident you are in
+            your guess from 1-10
+          </li>
+        </ol>
+        <button className="start-button" onClick={onStart}>
+          Start Survey
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Conclude() {
-  return <div>Thank you for participating!</div>;
+  return (
+    <div className="conclude-page">
+      <h1>Thank you for participating!</h1>
+      <p>
+        Your responses will help us understand how people determine the age of
+        photographs.
+      </p>
+    </div>
+  );
 }
 
 export default App;
