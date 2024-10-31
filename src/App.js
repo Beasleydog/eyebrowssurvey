@@ -113,7 +113,7 @@ function Instructions({ onStart }) {
         <ol>
           <li>
             <strong>Identify Key Features:</strong> Click on any features in the
-            photo that help you determine its age (clothing, technology, etc.)
+            photo that stand out or helps you determine its age.
           </li>
           <li>
             <strong>Explain Your Reasoning:</strong> For each feature you click,
