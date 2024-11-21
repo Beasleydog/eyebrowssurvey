@@ -55,13 +55,13 @@ function App() {
     return newUserId;
   };
 
-  const [currentQuestion, setCurrentQuestion] = useState(-2);
+  const [currentQuestion, setCurrentQuestion] = useState(-1);
   const [userBackground, setUserBackground] = useState(null);
   const userId = getUserId();
 
   function handleBackgroundSubmit(backgroundData) {
     setUserBackground(backgroundData);
-    setCurrentQuestion(-1);
+    setCurrentQuestion(0);
   }
 
   function handleNextQuestion(data) {
@@ -102,10 +102,10 @@ function App() {
 
   return (
     <div className="App">
-      {currentQuestion === -2 ? (
+      {currentQuestion === -1 ? (
+        <Instructions onStart={() => setCurrentQuestion(-2)} />
+      ) : currentQuestion === -2 ? (
         <BackgroundInfo onSubmit={handleBackgroundSubmit} />
-      ) : currentQuestion === -1 ? (
-        <Instructions onStart={startSurvey} />
       ) : currentQuestion < images.length ? (
         <Question
           key={currentQuestion}
