@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import Question from "./Question";
+import BackgroundInfo from "./BackgroundInfo";
 
 function App() {
   const images = [
@@ -44,11 +45,31 @@ function App() {
     "/people/woman20.png",
   ];
 
-  const [currentQuestion, setCurrentQuestion] = useState(-1);
-  const userId = Math.random().toString(36).substring(2, 15);
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("surveyUserId");
+    if (storedUserId) {
+      return storedUserId;
+    }
+    const newUserId = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem("surveyUserId", newUserId);
+    return newUserId;
+  };
+
+  const [currentQuestion, setCurrentQuestion] = useState(-2);
+  const [userBackground, setUserBackground] = useState(null);
+  const userId = getUserId();
+
+  function handleBackgroundSubmit(backgroundData) {
+    setUserBackground(backgroundData);
+    setCurrentQuestion(-1);
+  }
 
   function handleNextQuestion(data) {
-    storeData(data, userId);
+    const enrichedData = {
+      ...data,
+      backgroundInfo: userBackground,
+    };
+    storeData(enrichedData, userId);
     setCurrentQuestion(currentQuestion + 1);
   }
 
@@ -81,7 +102,9 @@ function App() {
 
   return (
     <div className="App">
-      {currentQuestion === -1 ? (
+      {currentQuestion === -2 ? (
+        <BackgroundInfo onSubmit={handleBackgroundSubmit} />
+      ) : currentQuestion === -1 ? (
         <Instructions onStart={startSurvey} />
       ) : currentQuestion < images.length ? (
         <Question

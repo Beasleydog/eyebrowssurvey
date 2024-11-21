@@ -23,12 +23,28 @@ function doPost(e) {
         .setHeaders(headers);
     }
 
-    // Get the active spreadsheet and sheet
+    // Get the active spreadsheet and sheets
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getActiveSheet();
+    const pointsSheet = ss.getSheetByName("Points") || ss.getActiveSheet();
+    const backgroundSheet =
+      ss.getSheetByName("Background") || ss.insertSheet("Background");
 
-    // Get the points array from the post data
-    const { image, yearGuess, confidence, points } = postData;
+    // Get the points array and background info from the post data
+    const { image, yearGuess, confidence, points, backgroundInfo } = postData;
+
+    // Store background information if it exists and hasn't been stored yet
+    if (backgroundInfo) {
+      const backgroundRow = [
+        new Date(), // Timestamp
+        userId,
+        backgroundInfo.age,
+        backgroundInfo.gender,
+        backgroundInfo.race,
+        backgroundInfo.fashionKnowledge,
+        backgroundInfo.aiExperience,
+      ];
+      backgroundSheet.appendRow(backgroundRow);
+    }
 
     // Process each point and add it as a new row
     points.forEach((point) => {
@@ -48,7 +64,7 @@ function doPost(e) {
         point.comment,
       ];
 
-      sheet.appendRow(rowData);
+      pointsSheet.appendRow(rowData);
     });
 
     // Return success response with CORS headers
@@ -87,12 +103,13 @@ function doOptions(e) {
     .setHeaders(headers);
 }
 
-// Optional: Add this function to set up the initial headers
+// Modify the setup function to create both sheets with appropriate headers
 function setupSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getActiveSheet();
 
-  const headers = [
+  // Set up Points sheet
+  const pointsSheet = ss.getSheetByName("Points") || ss.getActiveSheet();
+  const pointsHeaders = [
     "Timestamp",
     "User ID",
     "Image",
@@ -104,7 +121,25 @@ function setupSheet() {
     "Point Comparison",
     "Point Comment",
   ];
+  pointsSheet
+    .getRange(1, 1, 1, pointsHeaders.length)
+    .setValues([pointsHeaders]);
+  pointsSheet.setFrozenRows(1);
 
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  sheet.setFrozenRows(1);
+  // Set up Background sheet
+  const backgroundSheet =
+    ss.getSheetByName("Background") || ss.insertSheet("Background");
+  const backgroundHeaders = [
+    "Timestamp",
+    "User ID",
+    "Age",
+    "Gender",
+    "Race/Ethnicity",
+    "Fashion Knowledge (1-5)",
+    "AI Experience (1-5)",
+  ];
+  backgroundSheet
+    .getRange(1, 1, 1, backgroundHeaders.length)
+    .setValues([backgroundHeaders]);
+  backgroundSheet.setFrozenRows(1);
 }
