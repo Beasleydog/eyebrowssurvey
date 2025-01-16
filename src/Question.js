@@ -10,7 +10,7 @@ function getRandomColor() {
   return color;
 }
 
-function Question({ image, onSubmit }) {
+function Question({ image, onSubmit, currentStep = 1, totalSteps = 8 }) {
   const initialYear = new Date().getFullYear();
   const initialConfidence = 5;
 
@@ -37,7 +37,7 @@ function Question({ image, onSubmit }) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const color = getRandomColor();
-    setDots([...dots, { x, y, color, year: "", comparison: "=" }]);
+    setDots([...dots, { x, y, color }]);
     setComments([...comments, ""]);
   };
 
@@ -45,18 +45,6 @@ function Question({ image, onSubmit }) {
     const newComments = [...comments];
     newComments[index] = value;
     setComments(newComments);
-  };
-
-  const handleYearChange = (index, value) => {
-    const newDots = [...dots];
-    newDots[index].year = value;
-    setDots(newDots);
-  };
-
-  const handleComparisonChange = (index, value) => {
-    const newDots = [...dots];
-    newDots[index].comparison = value;
-    setDots(newDots);
   };
 
   const handleDeleteComment = (index) => {
@@ -130,35 +118,6 @@ function Question({ image, onSubmit }) {
                   placeholder={`Comment ${index + 1}`}
                   className="commentTextarea"
                 />
-                <div className="dateOptions">
-                  <div className="comparisonButtons">
-                    <button
-                      onClick={() => handleComparisonChange(index, "<")}
-                      className={dots[index].comparison === "<" ? "active" : ""}
-                    >
-                      &lt;
-                    </button>
-                    <button
-                      onClick={() => handleComparisonChange(index, ">")}
-                      className={dots[index].comparison === ">" ? "active" : ""}
-                    >
-                      &gt;
-                    </button>
-                    <button
-                      onClick={() => handleComparisonChange(index, "=")}
-                      className={dots[index].comparison === "=" ? "active" : ""}
-                    >
-                      =
-                    </button>
-                  </div>
-                  <input
-                    type="number"
-                    value={dots[index].year}
-                    onChange={(e) => handleYearChange(index, e.target.value)}
-                    placeholder="Year"
-                    className="yearInput"
-                  />
-                </div>
                 <button
                   className="delete"
                   onClick={() => handleDeleteComment(index)}
@@ -176,7 +135,7 @@ function Question({ image, onSubmit }) {
           <input
             id="yearSlider"
             type="range"
-            min="1900"
+            min="1980"
             max={new Date().getFullYear()}
             value={year}
             onChange={(e) => setYear(e.target.value)}
@@ -198,7 +157,7 @@ function Question({ image, onSubmit }) {
           <span className="confidenceLabel">{confidence}/10</span>
         </div>
         <button onClick={handleSubmit} className="submitButton">
-          Submit
+          Next ({currentStep}/{totalSteps})
         </button>
       </div>
     </div>
