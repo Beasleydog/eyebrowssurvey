@@ -73,8 +73,15 @@ function Question({ image, onSubmit, currentStep = 1, totalSteps = 8 }) {
     const img = new Image();
     img.src = image;
     img.onload = () => {
+      //Calc img width height, must maintain aspect ratio
+      const maxWidth = 500;
+      const maxHeight = 500;
+      const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+      const newWidth = img.width * scale;
+      const newHeight = img.height * scale;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height); // Draw the image
+      ctx.drawImage(img, 0, 0, newWidth, newHeight); // Draw the image
       dots.forEach((dot) => {
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, 10, 0, 2 * Math.PI); // Increase the radius to make the dot bigger
