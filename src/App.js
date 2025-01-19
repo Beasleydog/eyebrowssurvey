@@ -5,41 +5,100 @@ import BackgroundInfo from "./BackgroundInfo";
 import LoadingSpinner from "./LoadingSpinner";
 
 function App() {
-  const images = [
-    "/people/woman0.png",
-    "/people/woman1.png",
-    "/people/woman2.png",
-    "/people/woman3.png",
-    "/people/woman4.png",
-    "/people/woman5.png",
-    "/people/woman6.png",
-    "/people/woman7.png",
-    // "/people/man9.png",
-    // "/people/woman9.png",
-    // "/people/man10.png",
-    // "/people/woman10.png",
-    // "/people/man11.png",
-    // "/people/woman11.png",
-    // "/people/man12.png",
-    // "/people/woman12.png",
-    // "/people/man13.png",
-    // "/people/woman13.png",
-    // "/people/man14.png",
-    // "/people/woman14.png",
-    // "/people/man15.png",
-    // "/people/woman15.png",
-    // "/people/man16.png",
-    // "/people/woman16.png",
-    // "/people/man17.png",
-    // "/people/woman17.png",
-    // "/people/man18.png",
-    // "/people/woman18.png",
-    // "/people/man19.png",
-    // "/people/woman19.png",
-    // "/people/man20.png",
-    // "/people/woman20.png",
-  ];
+  const imagesByCategory = {
+    18: {
+      real: [
+        "/people/1r18.png",
+        "/people/2r18.png",
+        "/people/3r18.png",
+        "/people/4r18.png",
+        "/people/5r18.png",
+      ],
+      fake: [
+        "/people/1f18.png",
+        "/people/2f18.png",
+        "/people/3f18.png",
+        "/people/4f18.png",
+        "/people/5f18.png",
+      ],
+    },
+    30: {
+      real: [
+        "/people/1r30.png",
+        "/people/2r30.png",
+        "/people/3r30.png",
+        "/people/4r30.png",
+      ],
+      fake: [
+        "/people/1f30.png",
+        "/people/2f30.png",
+        "/people/3f30.png",
+        "/people/4f30.png",
+        "/people/5f30.png",
+      ],
+    },
+    50: {
+      real: [
+        "/people/1r50.png",
+        "/people/2r50.png",
+        "/people/3r50.png",
+        "/people/4r50.png",
+        "/people/5r50.png",
+      ],
+      fake: [
+        "/people/1f50.png",
+        "/people/2f50.png",
+        "/people/3f50.png",
+        "/people/4f50.png",
+        "/people/5f50.png",
+      ],
+    },
+  };
 
+  // Function to get balanced random images
+  const getBalancedRandomImages = () => {
+    const selectedImages = [];
+    const ages = [18, 30, 50];
+
+    // Get 2-3 images from each age category to total 8 images
+    let remainingImages = 8;
+    ages.forEach((age, index) => {
+      // For first two age groups, get 3 images each. For last group get 2 images
+      const numFromAge = index < 2 ? 3 : 2;
+      const ageImages = [];
+
+      // Try to balance real and fake within each age category
+      const numReal = Math.ceil(numFromAge / 2);
+      const numFake = numFromAge - numReal;
+
+      // Select real images
+      const realPool = [...imagesByCategory[age].real];
+      for (let i = 0; i < numReal; i++) {
+        if (realPool.length > 0) {
+          const idx = Math.floor(Math.random() * realPool.length);
+          ageImages.push(realPool.splice(idx, 1)[0]);
+        }
+      }
+
+      // Select fake images
+      const fakePool = [...imagesByCategory[age].fake];
+      for (let i = 0; i < numFake; i++) {
+        if (fakePool.length > 0) {
+          const idx = Math.floor(Math.random() * fakePool.length);
+          ageImages.push(fakePool.splice(idx, 1)[0]);
+        }
+      }
+
+      selectedImages.push(...ageImages);
+      remainingImages -= numFromAge;
+    });
+
+    // Shuffle the final array
+    return selectedImages.sort(() => Math.random() - 0.5);
+  };
+
+  const [images] = useState(getBalancedRandomImages());
+  console.log(images);
   const getUserId = () => {
     const storedUserId = localStorage.getItem("surveyUserId");
     if (storedUserId) {
