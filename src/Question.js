@@ -11,7 +11,8 @@ function getRandomColor() {
 }
 
 function Question({ image, onSubmit, currentStep = 1, totalSteps = 8 }) {
-  const initialYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
+  const initialYear = Math.floor((currentYear + 1990) / 2); // Midpoint between 1990 and current year
   const initialConfidence = 5;
 
   const [dots, setDots] = useState([]);
@@ -138,11 +139,13 @@ function Question({ image, onSubmit, currentStep = 1, totalSteps = 8 }) {
       </div>
       <div className="sliderControls">
         <div className="yearSliderContainer">
-          <label htmlFor="yearSlider">Year Estimate:</label>
+          <label htmlFor="yearSlider">
+            What year do you think this photo was taken?
+          </label>
           <input
             id="yearSlider"
             type="range"
-            min="1980"
+            min="1990"
             max={new Date().getFullYear()}
             value={year}
             onChange={(e) => setYear(e.target.value)}
@@ -151,7 +154,9 @@ function Question({ image, onSubmit, currentStep = 1, totalSteps = 8 }) {
           <span className="yearLabel">{year}</span>
         </div>
         <div className="confidenceContainer">
-          <label htmlFor="confidenceSlider">Confidence:</label>
+          <label htmlFor="confidenceSlider">
+            How confident are you in this?
+          </label>
           <input
             id="confidenceSlider"
             type="range"
