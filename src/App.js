@@ -185,7 +185,7 @@ function App() {
 function Instructions({ onStart }) {
   return (
     <div className="instructions-page">
-      <h1>Eyebrows Survey</h1>
+      <h1>Can you tell when this photo was taken?</h1>
       <div className="instructions-content">
         <p>
           Welcome! In this survey, you'll be shown a series of photographs and
@@ -202,22 +202,7 @@ function Instructions({ onStart }) {
             explain why it suggests a particular time period
           </li>
           <li>
-            <strong>Date Indicators:</strong> Use the &lt;, =, &gt; buttons to
-            specify if a feature suggests the photo was taken:
-            <ul>
-              <li>
-                &lt; <em>before</em> a specific year
-              </li>
-              <li>
-                = <em>exactly in</em> a specific year
-              </li>
-              <li>
-                &gt; <em>after</em> a specific year
-              </li>
-            </ul>
-          </li>
-          <li>
-            <strong>Final Guess:</strong> Use the slider to make your final
+            <strong>Final Guess:</strong> Use the textbox to make your final
             guess about when the photo was taken
           </li>
           <li>
@@ -225,6 +210,11 @@ function Instructions({ onStart }) {
             your guess from 1-10
           </li>
         </ol>
+        <h2>Demo:</h2>
+        <video width="70%" controls>
+          <source src={`${process.env.PUBLIC_URL}/vid.mp4`} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <button className="start-button" onClick={onStart}>
           Begin
         </button>

@@ -5,21 +5,39 @@ function BackgroundInfo({ onSubmit }) {
   const [formData, setFormData] = useState({
     age: "",
     gender: "",
-    race: "",
+    race: [],
     fashionKnowledge: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "race") {
+      const options = e.target.options;
+      const selectedValues = [];
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].selected) {
+          selectedValues.push(options[i].value);
+        }
+      }
+      setFormData((prev) => ({
+        ...prev,
+        [name]: selectedValues,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const submissionData = {
+      ...formData,
+      race: formData.race.join(", "),
+    };
+    onSubmit(submissionData);
   };
 
   return (
@@ -64,15 +82,17 @@ function BackgroundInfo({ onSubmit }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="race">Race/Ethnicity:</label>
+          <label htmlFor="race">
+            Race/Ethnicity (hold ctrl to select all that apply):
+          </label>
           <select
             id="race"
             name="race"
             required
+            multiple
             value={formData.race}
             onChange={handleChange}
           >
-            <option value="">Select race/ethnicity</option>
             <option value="asian">Asian</option>
             <option value="black">Black or African American</option>
             <option value="hispanic">Hispanic or Latino</option>
@@ -87,8 +107,12 @@ function BackgroundInfo({ onSubmit }) {
 
         <div className="form-group">
           <label htmlFor="fashionKnowledge">
-            How would you rate your knowledge of current fashion trends?
+            How would you rate your knowledge of current beauty trends?
           </label>
+          <p style={{ margin: "10px", marginLeft: "-20px" }}>
+            (this includes the current trends in fashion, makeup, hair,
+            eyebrows, accessories)
+          </p>
           <select
             id="fashionKnowledge"
             name="fashionKnowledge"
