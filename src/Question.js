@@ -147,15 +147,19 @@ function Question({ image, onSubmit, currentStep = 1, totalSteps = 8 }) {
           <label htmlFor="yearInput">
             What year do you think this photo was taken?
           </label>
-          <input
+          <select
             id="yearInput"
-            type="number"
-            min="1990"
-            max={new Date().getFullYear()}
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
+            value={year || ""}
+            onChange={(e) => setYear(Number(e.target.value))}
             className="yearInput"
-          />
+          >
+            <option value="">Select a year</option>
+            {Array.from({ length: currentYear - 1989 }, (_, i) => (
+              <option key={1990 + i} value={1990 + i}>
+                {1990 + i}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="confidenceContainer">
           <label htmlFor="confidenceSlider">

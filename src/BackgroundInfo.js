@@ -12,16 +12,18 @@ function BackgroundInfo({ onSubmit }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "race") {
-      const options = e.target.options;
-      const selectedValues = [];
-      for (let i = 0; i < options.length; i++) {
-        if (options[i].selected) {
-          selectedValues.push(options[i].value);
+      const newRaces = [...formData.race];
+      if (e.target.checked) {
+        newRaces.push(value);
+      } else {
+        const index = newRaces.indexOf(value);
+        if (index > -1) {
+          newRaces.splice(index, 1);
         }
       }
       setFormData((prev) => ({
         ...prev,
-        [name]: selectedValues,
+        race: newRaces,
       }));
     } else {
       setFormData((prev) => ({
@@ -82,27 +84,39 @@ function BackgroundInfo({ onSubmit }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="race">
-            Race/Ethnicity (hold ctrl to select all that apply):
-          </label>
-          <select
-            id="race"
-            name="race"
-            required
-            multiple
-            value={formData.race}
-            onChange={handleChange}
-          >
-            <option value="asian">Asian</option>
-            <option value="black">Black or African American</option>
-            <option value="hispanic">Hispanic or Latino</option>
-            <option value="white">White</option>
-            <option value="native">Native American or Alaska Native</option>
-            <option value="pacific">Native Hawaiian or Pacific Islander</option>
-            <option value="multiple">Multiple races</option>
-            <option value="other">Other</option>
-            <option value="prefer_not_to_say">Prefer not to say</option>
-          </select>
+          <label>Race/Ethnicity (select all that apply):</label>
+          <div className="checkbox-group">
+            {[
+              { value: "asian", label: "Asian" },
+              { value: "black", label: "Black or African American" },
+              { value: "hispanic", label: "Hispanic or Latino" },
+              { value: "white", label: "White" },
+              { value: "native", label: "Native American or Alaska Native" },
+              {
+                value: "pacific",
+                label: "Native Hawaiian or Pacific Islander",
+              },
+              { value: "multiple", label: "Multiple races" },
+              { value: "other", label: "Other" },
+              { value: "prefer_not_to_say", label: "Prefer not to say" },
+            ].map((option) => (
+              <div
+                key={option.value}
+                className="checkbox-item"
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <input
+                  type="checkbox"
+                  id={option.value}
+                  name="race"
+                  value={option.value}
+                  checked={formData.race.includes(option.value)}
+                  onChange={handleChange}
+                />
+                <label htmlFor={option.value}>{option.label}</label>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="form-group">
