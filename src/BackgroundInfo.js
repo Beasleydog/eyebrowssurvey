@@ -75,11 +75,9 @@ function BackgroundInfo({ onSubmit }) {
             onChange={handleChange}
           >
             <option value="">Select gender</option>
-            <option value="male">Male</option>
             <option value="female">Female</option>
-            <option value="nonbinary">Non-binary</option>
-            <option value="other">Other</option>
-            <option value="prefer_not_to_say">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="nonbinary">Non-binary/Other</option>
           </select>
         </div>
 
@@ -87,18 +85,22 @@ function BackgroundInfo({ onSubmit }) {
           <label>Race/Ethnicity (select all that apply):</label>
           <div className="checkbox-group">
             {[
+              {
+                value: "american_indian",
+                label: "American Indian or Alaskan Native",
+              },
               { value: "asian", label: "Asian" },
               { value: "black", label: "Black or African American" },
               { value: "hispanic", label: "Hispanic or Latino" },
-              { value: "white", label: "White" },
-              { value: "native", label: "Native American or Alaska Native" },
               {
-                value: "pacific",
+                value: "middle_eastern",
+                label: "Middle Eastern or North African",
+              },
+              {
+                value: "pacific_islander",
                 label: "Native Hawaiian or Pacific Islander",
               },
-              { value: "multiple", label: "Multiple races" },
-              { value: "other", label: "Other" },
-              { value: "prefer_not_to_say", label: "Prefer not to say" },
+              { value: "white", label: "White" },
             ].map((option) => (
               <div
                 key={option.value}
